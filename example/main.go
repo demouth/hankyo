@@ -1,8 +1,3 @@
-# Hankyo
-
-Hankyo is a simple echo-like web framework written in Golang.
-
-```golang
 package main
 
 import (
@@ -19,4 +14,3 @@ func main() {
 	})
 	h.Run(":8080")
 }
-```
