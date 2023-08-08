@@ -1,6 +1,7 @@
 package hankyo
 
 import (
+	"bytes"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -40,6 +41,28 @@ func TestGet(t *testing.T) {
 	}
 	if w.Body.String() != "{\"A\":\"1\"}\n" {
 		t.Errorf("wrong body, found %#v", w.Body.String())
+	}
+}
+
+func TestMiddleware(t *testing.T) {
+	h := New()
+	b := new(bytes.Buffer)
+
+	h.Use(func(c *Context) {
+		b.WriteString("a")
+	})
+
+	h.Use(func(c *Context) {
+		b.WriteString("b")
+	})
+
+	h.Get("/hello", func(c *Context) {
+		c.JSON(200, nil)
+	})
+
+	_ = request(h, "GET", "/hello")
+	if b.String() != "ab" {
+		t.Errorf("buffer should be ab, found %s", b.String())
 	}
 }
 

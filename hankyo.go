@@ -112,6 +112,10 @@ func (h *Hankyo) Get(path string, hf ...HandlerFunc) {
 	h.Handle("GET", path, hf)
 }
 
+func (h *Hankyo) Use(hf ...HandlerFunc) {
+	h.handlers = append(h.handlers, hf...)
+}
+
 func (h *Hankyo) Handle(method, path string, hf []HandlerFunc) {
 	hf = append(h.handlers, hf...)
 	l := len(hf)
@@ -379,8 +383,10 @@ func lcp(a, b string) (i int) {
 
 func (c *Context) Next() {
 	c.i++
-	if c.i < c.l {
-		c.handlers[c.i](c)
+	i := c.i
+	l := c.l
+	for ; i < l; i++ {
+		c.handlers[i](c)
 	}
 }
 
