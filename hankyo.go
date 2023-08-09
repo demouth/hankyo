@@ -63,6 +63,7 @@ const (
 	anode              // Catch-all node
 
 	MIMEJSON = "application/json"
+	MIMEText = "text/plain"
 
 	HeaderContentType = "Content-Type"
 )
@@ -407,6 +408,12 @@ func (c *Context) JSON(n int, i interface{}) {
 	if err := enc.Encode(i); err != nil {
 		c.hankyo.internalServerErrorHandler(c)
 	}
+}
+
+func (c *Context) String(n int, s string) {
+	c.Response.Header().Set(HeaderContentType, MIMEText+"; charset=utf-8")
+	c.Response.WriteHeader(n)
+	c.Response.Write([]byte(s))
 }
 
 //////////////// response ////////////////

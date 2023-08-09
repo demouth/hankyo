@@ -57,12 +57,15 @@ func TestMiddleware(t *testing.T) {
 	})
 
 	h.Get("/hello", func(c *Context) {
-		c.JSON(200, nil)
+		c.String(200, "world")
 	})
 
-	_ = request(h, "GET", "/hello")
+	w := request(h, "GET", "/hello")
 	if b.String() != "ab" {
 		t.Errorf("buffer should be ab, found %s", b.String())
+	}
+	if w.Body.String() != "world" {
+		t.Error("body should be world")
 	}
 }
 
