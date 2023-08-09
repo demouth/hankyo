@@ -14,7 +14,35 @@ func TestBasic(t *testing.T) {
 			t.Errorf("Response code should be Bad request, was: %s", p)
 		}
 	})
+	h.Post("/users/:id", func(c *Context) {
+		if p := c.Param("id"); p != "2" {
+			t.Errorf("Response code should be Bad request, was: %s", p)
+		}
+	})
+	h.Delete("/users/:id", func(c *Context) {
+		if p := c.Param("id"); p != "3" {
+			t.Errorf("Response code should be Bad request, was: %s", p)
+		}
+	})
+	h.Put("/users/:id", func(c *Context) {
+		if p := c.Param("id"); p != "4" {
+			t.Errorf("Response code should be Bad request, was: %s", p)
+		}
+	})
+
 	r := request(h, "GET", "/users/1")
+	if r.Code != 200 {
+		t.Errorf("Response code should be Bad request, was: %d", r.Code)
+	}
+	r = request(h, "POST", "/users/2")
+	if r.Code != 200 {
+		t.Errorf("Response code should be Bad request, was: %d", r.Code)
+	}
+	r = request(h, "DELETE", "/users/3")
+	if r.Code != 200 {
+		t.Errorf("Response code should be Bad request, was: %d", r.Code)
+	}
+	r = request(h, "PUT", "/users/4")
 	if r.Code != 200 {
 		t.Errorf("Response code should be Bad request, was: %d", r.Code)
 	}

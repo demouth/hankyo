@@ -113,6 +113,18 @@ func (h *Hankyo) Get(path string, hf ...HandlerFunc) {
 	h.Handle("GET", path, hf)
 }
 
+func (h *Hankyo) Post(path string, hf ...HandlerFunc) {
+	h.Handle("POST", path, hf)
+}
+
+func (h *Hankyo) Put(path string, hf ...HandlerFunc) {
+	h.Handle("PUT", path, hf)
+}
+
+func (h *Hankyo) Delete(path string, hf ...HandlerFunc) {
+	h.Handle("DELETE", path, hf)
+}
+
 func (h *Hankyo) Use(hf ...HandlerFunc) {
 	h.handlers = append(h.handlers, hf...)
 }
